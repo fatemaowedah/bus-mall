@@ -82,9 +82,9 @@ function render() {
 
 render();
 var x = 25;
-imageContainer.addEventListener('click',handleClickOnGoat);
+imageContainer.addEventListener('click',handleClickOnProduct);
 var totalClicks =0;
-function handleClickOnGoat(event) {
+function handleClickOnProduct(event) {
   if(totalClicks <x) {
     if(event.target.id !== 'imageContainer') {
       if(event.target.id === 'leftImage') {
@@ -102,7 +102,7 @@ function handleClickOnGoat(event) {
     }
   }  else {
     console.log('more than 25 clicks');
-    imageContainer.removeEventListener('click',handleClickOnGoat);
+    imageContainer.removeEventListener('click',handleClickOnProduct);
     render2();
   }
 }
