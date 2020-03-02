@@ -1,26 +1,29 @@
 'use strict'
+var onscreenImage=[];
+var clicks = [];
+var views = [];
 var product = [
-    'bag',
-    'banana',
-    'bathroom',
-    'boots',
-    'breakfast',
-    'bubblegum',
-    'chair',
-    'cthulhu',
-    'dog-duck',
-    'dragon',
-    'pen',
-    'pet-sweep',
-    'scissors',
-    'shark',
-    'sweep',
-    'tauntaun',
-    'unicorn',
-    'usb',
-    'water-can',
-    'wine-glass',
-    'wireframe'
+  'bag',
+  'banana',
+  'bathroom',
+  'boots',
+  'breakfast',
+  'bubblegum',
+  'chair',
+  'cthulhu',
+  'dog-duck',
+  'dragon',
+  'pen',
+  'pet-sweep',
+  'scissors',
+  'shark',
+  'sweep',
+  'tauntaun',
+  'unicorn',
+  'usb',
+  'water-can',
+  'wine-glass',
+  'wireframe'
 ];
 
 var leftImage = document.getElementById('leftImage');
@@ -40,58 +43,60 @@ rightImage.src = `img/${product[2]}.jpg`;
 rightImage.alt = product[2];
 rightImage.title = product[2];
 
+
+
 function Products(name) {
-    this.name = name;
-    this.imagePath = `img/${this.name}.jpg`;
-    this.click = 0;
-    this.view = 0;
-    Products.all.push(this);
+  this.name = name;
+  this.imagePath = `img/${this.name}.jpg`;
+  this.click = 0;
+  this.view = 0;
+  Products.all.push(this);
 }
 Products.all = [];
-
 for (var i = 0; i < product.length; i++) {
-    new Products(product[i]);
+  new Products(product[i]);
 }
 var leftProduct, centerProduct, rightProduct;
 function render() {
+  leftProduct = Products.all[randomNumber(0, Products.all.length - 1)];
+  centerProduct = Products.all[randomNumber(0, Products.all.length - 1)];
+  rightProduct = Products.all[randomNumber(0, Products.all.length - 1)];
+  while (leftProduct.imagePath === rightProduct.imagePath || leftProduct.imagePath === centerProduct.imagePath || rightProduct.imagePath === centerProduct.imagePath || onscreenImage.includes(leftProduct.imagePath) || onscreenImage.includes(centerProduct.imagePath) || onscreenImage.includes(rightProduct.imagePath)) {
     leftProduct = Products.all[randomNumber(0, Products.all.length - 1)];
-    console.log(leftProduct);
     centerProduct = Products.all[randomNumber(0, Products.all.length - 1)];
-    console.log(centerProduct);
     rightProduct = Products.all[randomNumber(0, Products.all.length - 1)];
-    console.log(rightProduct);
-    while (leftProduct.imagePath === rightProduct.imagePath || leftProduct.imagePath === centerProduct.imagePath || rightProduct.imagePath === centerProduct.imagePath){
-      leftProduct = Products.all[randomNumber(0, Products.all.length - 1)];
-      centerProduct = Products.all[randomNumber(0, Products.all.length - 1)];
-      rightProduct = Products.all[randomNumber(0, Products.all.length - 1)];
-    }
-    leftImage.src =leftProduct.imagePath;
-    leftImage.alt = leftProduct.name;
-    leftImage.title = leftProduct.name;
+  }
+  leftImage.src = leftProduct.imagePath;
+  leftImage.alt = leftProduct.name;
+  leftImage.title = leftProduct.name;
 
-    centerImage.src =centerProduct.imagePath;
-    centerImage.alt = centerProduct.name;
-    centerImage.title = centerProduct.name;
+  centerImage.src = centerProduct.imagePath;
+  centerImage.alt = centerProduct.name;
+  centerImage.title = centerProduct.name;
 
-    rightImage.src =rightProduct.imagePath;
-    rightImage.alt = rightProduct.name;
-    rightImage.title = rightProduct.name;
+  rightImage.src = rightProduct.imagePath;
+  rightImage.alt = rightProduct.name;
+  rightImage.title = rightProduct.name;
 
-  
+
+  onscreenImage[0]=leftProduct.imagePath;
+  onscreenImage[1]=centerProduct.imagePath;
+  onscreenImage[2]=rightProduct.imagePath;
+
 }
 
 render();
 var x = 25;
-imageContainer.addEventListener('click',handleClickOnProduct);
-var totalClicks =0;
+imageContainer.addEventListener('click', handleClickOnProduct);
+var totalClicks = 0;
 function handleClickOnProduct(event) {
-  if(totalClicks <x) {
-    if(event.target.id !== 'imageContainer') {
-      if(event.target.id === 'leftImage') {
+  if (totalClicks < x) {
+    if (event.target.id !== 'imageContainer') {
+      if (event.target.id === 'leftImage') {
         leftProduct.click++;
-      } else if(event.target.id === 'centerImage') {
+      } else if (event.target.id === 'centerImage') {
         centerProduct.click++;
-      } else if(event.target.id === 'rightImage') {
+      } else if (event.target.id === 'rightImage') {
         rightProduct.click++;
       }
       totalClicks++;
@@ -99,28 +104,69 @@ function handleClickOnProduct(event) {
       centerProduct.view++;
       rightProduct.view++;
       render();
+
     }
-  }  else {
-    console.log('more than 25 clicks');
-    imageContainer.removeEventListener('click',handleClickOnProduct);
+  } else {
+    imageContainer.removeEventListener('click', handleClickOnProduct);
     render2();
   }
 }
+
 function render2() {
-    var ulE1 = document.getElementById('summary');
-    for (var i =0; i<Products.all.length ; i++) {
-      var liE1 = document.createElement('li');
+  // var ulE1 = document.getElementById('summary');
+
+  for (var i = 0; i < product.length; i++) {
+    // var liE1 = document.createElement('li');
     //   Banana Slicer had 3 votes and was shown 5 times
-      liE1.textContent = `${Products.all[i].name} had ${Products.all[i].click} votes and  was shown ${Products.all[i].view} times`;
-      ulE1.appendChild(liE1);
-      var liE1 = document.createElement('li');
-    }
-  }
+    // liE1.textContent = `${Products.all[i].name} had ${Products.all[i].click} votes and  was shown ${Products.all[i].view} times`;
+    // ulE1.appendChild(liE1);
+    // var liE1 = document.createElement('li'); 
+    clicks.push(Products.all[i].click);
+    views.push(Products.all[i].view);
+    console.log(clicks);
+    console.log(views);
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: product,
+        datasets: [{
+          label: '# of clicks',
+          data: clicks,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '# of veiw',
+          data: views,
+          backgroundColor: 'aquamarine',
+          borderColor: '#009688',
+          borderWidth: 1
 
 
-  function randomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+        }]
+
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+
   }
+}
+console.log(clicks);
+
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 
 
 
