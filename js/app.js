@@ -1,5 +1,5 @@
 'use strict'
-var onscreenImage=[];
+var onscreenImage = [];
 var clicks = [];
 var views = [];
 var product = [
@@ -79,9 +79,9 @@ function render() {
   rightImage.title = rightProduct.name;
 
 
-  onscreenImage[0]=leftProduct.imagePath;
-  onscreenImage[1]=centerProduct.imagePath;
-  onscreenImage[2]=rightProduct.imagePath;
+  onscreenImage[0] = leftProduct.imagePath;
+  onscreenImage[1] = centerProduct.imagePath;
+  onscreenImage[2] = rightProduct.imagePath;
 
 }
 
