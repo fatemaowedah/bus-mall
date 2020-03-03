@@ -56,6 +56,19 @@ Products.all = [];
 for (var i = 0; i < product.length; i++) {
   new Products(product[i]);
 }
+function updateProduct(){
+  var productString = JSON.stringify(Products.all);
+  localStorage.setItem('productChoose', productString);
+}
+function getProduct(){
+  var productString = localStorage.getItem('productChoose');
+  console.log(productString);
+  if(productString){
+    Products.all = JSON.parse(productString);
+    render2();
+  }
+}
+getProduct();
 var leftProduct, centerProduct, rightProduct;
 function render() {
   leftProduct = Products.all[randomNumber(0, Products.all.length - 1)];
@@ -108,19 +121,20 @@ function handleClickOnProduct(event) {
     }
   } else {
     imageContainer.removeEventListener('click', handleClickOnProduct);
+    updateProduct();
     render2();
   }
 }
 
 function render2() {
-  // var ulE1 = document.getElementById('summary');
+  var ulE1 = document.getElementById('summary');
 
   for (var i = 0; i < product.length; i++) {
-    // var liE1 = document.createElement('li');
+    var liE1 = document.createElement('li');
     //   Banana Slicer had 3 votes and was shown 5 times
-    // liE1.textContent = `${Products.all[i].name} had ${Products.all[i].click} votes and  was shown ${Products.all[i].view} times`;
-    // ulE1.appendChild(liE1);
-    // var liE1 = document.createElement('li'); 
+    liE1.textContent = `${Products.all[i].name} had ${Products.all[i].click} votes and  was shown ${Products.all[i].view} times`;
+    ulE1.appendChild(liE1);
+    var liE1 = document.createElement('li'); 
     clicks.push(Products.all[i].click);
     views.push(Products.all[i].view);
     console.log(clicks);
