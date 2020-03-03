@@ -128,7 +128,7 @@ function handleClickOnProduct(event) {
 
 function render2() {
   var ulE1 = document.getElementById('summary');
-
+  ulE1.innerHTML = "";
   for (var i = 0; i < product.length; i++) {
     var liE1 = document.createElement('li');
     //   Banana Slicer had 3 votes and was shown 5 times
